@@ -82,7 +82,7 @@ public class Model {
 		this.percorsoMigliore =new LinkedList<>();
 		List<String> parziale =new LinkedList<>();
 		parziale.add(sorgente);
-		min=calcolaPeso(parziale);
+		min=Integer.MIN_VALUE;
 		cerca(dest, parziale);
 		
 		return this.percorsoMigliore;
@@ -94,6 +94,7 @@ public class Model {
 			if(calcolaPeso(parziale)<min) {
 				percorsoMigliore= new ArrayList<>(parziale);
 				min=calcolaPeso(parziale);
+				return;
 			}
 		}
 		
