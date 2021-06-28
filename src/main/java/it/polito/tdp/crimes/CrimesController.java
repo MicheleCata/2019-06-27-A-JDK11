@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.jgrapht.graph.DefaultWeightedEdge;
+
 import it.polito.tdp.crimes.model.Adiacenze;
 import it.polito.tdp.crimes.model.Model;
 import javafx.event.ActionEvent;
@@ -36,7 +38,7 @@ public class CrimesController {
     private Button btnAnalisi; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxArco"
-    private ComboBox<?> boxArco; // Value injected by FXMLLoader
+    private ComboBox<DefaultWeightedEdge> boxArco; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnPercorso"
     private Button btnPercorso; // Value injected by FXMLLoader
@@ -58,6 +60,8 @@ public class CrimesController {
     	for (Adiacenze a: archiMax) {
     		txtResult.appendText(a+"\n");
     	}
+    	
+    	boxArco.getItems().addAll(model.getArchi());
     }
 
     @FXML

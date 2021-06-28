@@ -2,6 +2,7 @@ package it.polito.tdp.crimes.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
@@ -66,4 +67,7 @@ public class Model {
 		return archiMax;
 	}
 	
+	public Set<DefaultWeightedEdge>getArchi(){
+		return grafo.edgeSet();
+	}
 }
