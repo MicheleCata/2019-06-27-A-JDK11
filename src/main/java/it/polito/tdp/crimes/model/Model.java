@@ -90,7 +90,7 @@ public class Model {
 	private void cerca(String destinazione, List<String> parziale) {
 		
 		String ultimo= parziale.get(parziale.size()-1);
-		if (ultimo.equals(destinazione)) {
+		if (ultimo.equals(destinazione)&& parziale.size()==grafo.vertexSet().size()) {
 			if(calcolaPeso(parziale)<min) {
 				percorsoMigliore= new ArrayList<>(parziale);
 				min=calcolaPeso(parziale);
