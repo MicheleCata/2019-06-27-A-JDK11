@@ -25,10 +25,10 @@ public class CrimesController {
     private URL location;
 
     @FXML // fx:id="boxCategoria"
-    private ComboBox<?> boxCategoria; // Value injected by FXMLLoader
+    private ComboBox<String> boxCategoria; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxAnno"
-    private ComboBox<?> boxAnno; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnAnalisi"
     private Button btnAnalisi; // Value injected by FXMLLoader
@@ -46,6 +46,10 @@ public class CrimesController {
     void doCreaGrafo(ActionEvent event) {
     	txtResult.clear();
     	txtResult.appendText("Crea grafo...\n");
+    	String categoria = boxCategoria.getValue();
+    	int anno = boxAnno.getValue();
+    	
+    	
     }
 
     @FXML
@@ -67,5 +71,8 @@ public class CrimesController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	
+    	boxCategoria.getItems().addAll(model.getCategory());
+    	boxAnno.getItems().addAll(model.getAnno());
     }
 }

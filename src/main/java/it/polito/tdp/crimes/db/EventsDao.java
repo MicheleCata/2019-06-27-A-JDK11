@@ -53,5 +53,79 @@ public class EventsDao {
 			return null ;
 		}
 	}
+	
+	public List<String> getCategory (){
+		String sql = "SELECT DISTINCT e.`offense_category_id` as categoria "
+				+ "From events e";
+		
+		List<String> result = new ArrayList<>();
+		Connection conn = DBConnect.getConnection() ;
+		try {
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+				result.add(res.getString("categoria"));
+			}
+		
+		conn.close();
+		return result;
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return null;
+	}
+	}
+	
+	public List<Integer> getAnno(){
+		String sql= "SELECT DISTINCT Year(e.`reported_date`) as anno "
+				+ "From events e "
+				+ "order by Year(e.`reported_date`) asc";
+		List<Integer> result = new ArrayList<>();
+		Connection conn = DBConnect.getConnection() ;
+		try {
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+				result.add(res.getInt("anno"));
+			}
+		
+		conn.close();
+		return result;
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return null;
+	}
+	}
+	
+	public List<String> getVertici(String categoria, int anno){
+		String sql = "SELECT DISTINCT e.`offense_type_id` as evento "
+				+ "From events e "
+				+ "where e.`offense_category_id`= ? AND Year(e.`reported_date`)= ?";
+		List<String> result = new ArrayList<>();
+		Connection conn = DBConnect.getConnection() ;
+		try {
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			st.setString(1, categoria);
+			st.setInt(2, anno);
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+				result.add(res.getString("evento"));
+			}
+			conn.close();
+			
+			return result;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 
 }
