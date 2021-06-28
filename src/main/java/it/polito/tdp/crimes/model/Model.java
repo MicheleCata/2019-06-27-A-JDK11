@@ -30,10 +30,21 @@ public class Model {
 		grafo = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 		Graphs.addAllVertices(grafo, dao.getVertici(categoria, anno));
 		
+		for (Adiacenze a: dao.getAdiacenze(categoria, anno)) {
+			Graphs.addEdgeWithVertices(grafo, a.getE1(), a.getE2(), a.getPeso());
+		}
 		
+		System.out.format("Grafo creato con %d vertici e %d archi\n",
+ 				this.grafo.vertexSet().size(), this.grafo.edgeSet().size()); 
 		
-		
-		
+	}
+	
+	public int getNumVertici() {
+		return this.grafo.vertexSet().size();
+	}
+	
+	public int getNArchi() {
+		return this.grafo.edgeSet().size();
 	}
 	
 }

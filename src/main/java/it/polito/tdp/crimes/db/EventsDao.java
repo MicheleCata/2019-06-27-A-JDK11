@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.polito.tdp.crimes.model.Adiacenze;
 import it.polito.tdp.crimes.model.Event;
 
 
@@ -127,5 +129,34 @@ public class EventsDao {
 		}
 	}
 	
+	public List<Adiacenze> getAdiacenze(String categoria, int anno) {
+		String sql = "SELECT e1.`offense_type_id` as id1, e2.`offense_type_id` as id2, Count(Distinct e1.`district_id`) as peso "
+				+ "From events e1, events e2 "
+				+ "where e1.`offense_category_id`= ? and e2.`offense_category_id`= e1.`offense_category_id`AND Year(e1.`reported_date`)= ? AND Year(e1.`reported_date`)=Year(e2.`reported_date`) AND e1.`offense_type_id`>e2.`offense_type_id` and e1.`district_id`=e2.`district_id` "
+				+ "group by id1,id2 "
+				+ "having peso>0";
+		List<Adiacenze> result = new ArrayList<>();
+		Connection conn = DBConnect.getConnection() ;
+		try {
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			st.setString(1, categoria);
+			st.setInt(2, anno);
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+				result.add(new Adiacenze(res.getString("id1"), res.getString("id2"), res.getInt("peso")));
+			}
+			conn.close();
+			
+			return result;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+		
+	
+	 
 
 }

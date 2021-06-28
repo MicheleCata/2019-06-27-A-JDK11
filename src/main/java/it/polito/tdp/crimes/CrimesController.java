@@ -49,7 +49,8 @@ public class CrimesController {
     	String categoria = boxCategoria.getValue();
     	int anno = boxAnno.getValue();
     	
-    	
+    	this.model.creaGrafo(categoria, anno);
+    	txtResult.appendText("Grafo creato\n #VERTICI: "+ model.getNumVertici()+ " #ARCHI: "+ model.getNArchi()+"\n");
     }
 
     @FXML
