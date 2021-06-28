@@ -5,8 +5,10 @@
 package it.polito.tdp.crimes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.crimes.model.Adiacenze;
 import it.polito.tdp.crimes.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,6 +53,11 @@ public class CrimesController {
     	
     	this.model.creaGrafo(categoria, anno);
     	txtResult.appendText("Grafo creato\n #VERTICI: "+ model.getNumVertici()+ " #ARCHI: "+ model.getNArchi()+"\n");
+    	
+    	List<Adiacenze> archiMax = model.getPesoMax();
+    	for (Adiacenze a: archiMax) {
+    		txtResult.appendText(a+"\n");
+    	}
     }
 
     @FXML
@@ -72,7 +79,6 @@ public class CrimesController {
     
     public void setModel(Model model) {
     	this.model = model;
-    	
     	boxCategoria.getItems().addAll(model.getCategory());
     	boxAnno.getItems().addAll(model.getAnno());
     }

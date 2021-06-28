@@ -37,6 +37,10 @@ public class Adiacenze {
 		this.peso = peso;
 	}
 	
+	public String toString() {
+		return this.e1+" - "+ this.e2+" "+ this.peso;
+	}
+	
 	
 
 }
