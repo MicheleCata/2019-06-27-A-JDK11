@@ -38,7 +38,7 @@ public class CrimesController {
     private Button btnAnalisi; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxArco"
-    private ComboBox<DefaultWeightedEdge> boxArco; // Value injected by FXMLLoader
+    private ComboBox<Adiacenze> boxArco; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnPercorso"
     private Button btnPercorso; // Value injected by FXMLLoader
@@ -52,6 +52,10 @@ public class CrimesController {
     	txtResult.appendText("Crea grafo...\n");
     	String categoria = boxCategoria.getValue();
     	int anno = boxAnno.getValue();
+    	if (categoria==null || anno==0) {
+    		txtResult.appendText("Seleziona valori di input\n");
+    		return;
+    	}
     	
     	this.model.creaGrafo(categoria, anno);
     	txtResult.appendText("Grafo creato\n #VERTICI: "+ model.getNumVertici()+ " #ARCHI: "+ model.getNArchi()+"\n");
@@ -68,6 +72,16 @@ public class CrimesController {
     void doCalcolaPercorso(ActionEvent event) {
     	txtResult.clear();
     	txtResult.appendText("Calcola percorso...\n");
+    	Adiacenze arco= boxArco.getValue();
+    	if (arco==null) {
+    		txtResult.appendText("Seleziona un arco!!");
+    		return;
+    	}
+    	List<String> percorso = model.trovaPercorso(arco.getE1(), arco.getE2());
+    	txtResult.appendText("PERCORSO TRA "+ arco.getE1()+" e "+ arco.getE2()+":\n\n");
+    	for (String v:percorso) {
+    		txtResult.appendText(v+"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

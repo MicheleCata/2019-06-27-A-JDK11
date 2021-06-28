@@ -1,8 +1,8 @@
 package it.polito.tdp.crimes.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
@@ -16,6 +16,9 @@ public class Model {
 	
 	private Graph<String,DefaultWeightedEdge> grafo;
 	private EventsDao dao;
+	
+	private List<String> percorsoMigliore;
+	private int min;
 	
 	public Model() {
 		dao = new EventsDao();
@@ -67,7 +70,51 @@ public class Model {
 		return archiMax;
 	}
 	
-	public Set<DefaultWeightedEdge>getArchi(){
-		return grafo.edgeSet();
+	public List<Adiacenze> getArchi(){
+		List<Adiacenze> archi = new ArrayList<>();
+		for (DefaultWeightedEdge e : grafo.edgeSet()) {
+			archi.add(new Adiacenze(grafo.getEdgeSource(e),grafo.getEdgeTarget(e),(int)grafo.getEdgeWeight(e)));
+		}
+		return archi;
 	}
+	
+	public List<String> trovaPercorso(String sorgente, String dest) {
+		this.percorsoMigliore =new LinkedList<>();
+		List<String> parziale =new LinkedList<>();
+		parziale.add(sorgente);
+		min=calcolaPeso(parziale);
+		cerca(dest, parziale);
+		
+		return this.percorsoMigliore;
+	}
+	private void cerca(String destinazione, List<String> parziale) {
+		
+		String ultimo= parziale.get(parziale.size()-1);
+		if (ultimo.equals(destinazione)) {
+			if(calcolaPeso(parziale)<min) {
+				percorsoMigliore= new ArrayList<>(parziale);
+				min=calcolaPeso(parziale);
+			}
+		}
+		
+		for (String s: Graphs.neighborListOf(grafo, ultimo)) {
+			if (!parziale.contains(s)) {
+				parziale.add(s);
+				cerca(destinazione,parziale);
+				parziale.remove(parziale.size()-1);
+			}
+		}
+		
+	}
+	private int calcolaPeso(List<String> parziale) {
+		int pesoMin=0;
+		for (int i=1; i<parziale.size();i++) {
+			String s1 = parziale.get(i-1);
+			String s2 = parziale.get(i);
+			pesoMin+=(int) grafo.getEdgeWeight(grafo.getEdge(s1, s2));
+		}
+		return pesoMin;
+	}
+	
+	
 }
